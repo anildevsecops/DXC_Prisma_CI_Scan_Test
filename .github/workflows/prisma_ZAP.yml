@@ -41,16 +41,12 @@ jobs:
         with:
           api-key: ${{ secrets.BC_API_KEY }}
           soft_fail: true
-
-      - name: Run Dastardly Action Step
-        uses: PortSwigger/dastardly-github-action@main
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.4.0
         with:
-          target-url: 'https://ginandjuice.shop'
-          failure_criteria: High
-      - name: Publish Test Report
-        if: always()                                    # Forces this step to always run
-        uses: mikepenz/action-junit-report@v3
-        with:
-          report_paths: '**/dastardly-report.xml'       # You need to update this path if you pass in a different output filename to the Dastardly action
-          require_test: true
-        
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          target: 'https://ginandjuice.shop/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+     
