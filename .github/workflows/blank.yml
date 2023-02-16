@@ -29,5 +29,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           docker_name: 'owasp/zap2docker-stable'
           target: 'https://3000-anildevsecops-juiceshop-ehkz5u68v5i.ws-us87.gitpod.io/#/'
-          rules_file_name: '.zap/rules.tsv'
-          cmd_options: '-a'
+        
