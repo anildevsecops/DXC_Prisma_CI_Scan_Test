@@ -1,0 +1,33 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# A sample workflow that checks for security issues using
+# the Prisma Cloud Infrastructure as Code Scan Action on
+# the IaC files present in the repository.
+# The results are uploaded to GitHub Security Code Scanning
+#
+# For more details on the Action configuration see https://github.com/prisma-cloud-shiftleft/iac-scan-action
+
+name: Dast Authenticated Scan
+
+on: [push]
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan the webapplication
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.7.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          target: 'https://3000-anildevsecops-juiceshop-ehkz5u68v5i.ws-us87.gitpod.io/#/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
